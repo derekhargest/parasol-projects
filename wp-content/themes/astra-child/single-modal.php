@@ -8,7 +8,4 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly.
 }
 
-?>
-
-
-		<?php the_content(); ?>
+the_content();

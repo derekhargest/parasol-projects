@@ -139,7 +139,7 @@ $('.pop-up-button').on('click',function(){
         <button id="close-filter-box" class="close-btn">×</button>
         <h4>FILTERS</h4> 
         <?php echo do_shortcode('[searchandfilter id="11506"]'); ?>
-        <button id="done-button" class="done-btn">Done</button>
+        <button id="done-button" class="done-btn">Update</button>
     </div>
 </div>
 <?php endif; ?>
