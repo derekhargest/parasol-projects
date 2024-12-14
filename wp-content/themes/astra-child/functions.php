@@ -219,40 +219,6 @@ add_action( 'admin_head', 'fix_svg' );
 if (!wp_next_scheduled('expire_events')){
   wp_schedule_event(time(), 'daily', 'expire_events'); 
 }
-add_action('expire_events', 'expire_events_function');
-function expire_events_function() {
-    $today = date('Ymd');
-    $args = array(
-        'post_type' => array('pop-up'), 
-        'posts_per_page' => -1 
-    );
-    $posts = get_posts($args);
-    foreach ($posts as $post) {
-        $expiredate = get_post_meta($post->ID, 'end_date', true);
-        $startdate = get_post_meta($post->ID, 'start_date', true);
-        $current_status = get_field('field_648057d2bd434', $post->ID); // Assuming ACF is used for the field.
-
-        // Skip updates if the current status is "1-highlight".
-        if ($current_status === "1-highlight") {
-            continue;
-        }
-
-        if (($expiredate < $today) && ($expiredate != "")) {
-            $field_key = "field_648057d2bd434";
-            $value = "past";
-            update_field($field_key, $value, $post->ID);
-        } elseif (($startdate < $today) && ($expiredate > $today)) {
-            $field_key = "field_648057d2bd434";
-            $value = "2-active";
-            update_field($field_key, $value, $post->ID);
-        } elseif (($startdate > $today) && ($expiredate > $today)) {
-            $field_key = "field_648057d2bd434";
-            $value = "3-upcoming";
-            update_field($field_key, $value, $post->ID);
-        }
-    }
-    wp_reset_postdata();
-}
 
 add_filter('wpgmp_infowindow_post_message', 'wpgmp_infowindow_post_message',1,2 );
 function wpgmp_infowindow_post_message($message,$map) {
@@ -322,9 +288,6 @@ add_action('wp_ajax_nopriv_yourFunction', 'yourFunction');
 
 /**
  * ACF SVG filter to allow raw SVG code.
- * 
- * https://www.advancedcustomfields.com/resources/html-escaping/
- * 
  */
 add_filter( 'wp_kses_allowed_html', 'acf_add_allowed_svg_tag', 10, 2 );
 
@@ -382,23 +345,3 @@ function load_post_content() {
 
 add_action('wp_ajax_load_post_content', 'load_post_content');
 add_action('wp_ajax_nopriv_load_post_content', 'load_post_content');
-
-function initialize_owl_carousel_script() {
-    ?>
-    <script type="text/javascript">
-        function initializeOwlCarousel() {
-            jQuery('.home-carousel--nested').owlCarousel({
-                nav: true,
-                loop: true,
-                dots: true,
-                items: 1,
-                animateIn: 'fadeIn',
-                animateOut: 'fadeOut',
-                autoplay: false
-            });
-        }
-        jQuery(document).ready(function($) { initializeOwlCarousel(); });
-    </script>
-    <?php
-}
-add_action('custom_layouts_before_render', 'initialize_owl_carousel_script');

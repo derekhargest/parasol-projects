@@ -1,38 +1,84 @@
 jQuery(document).on('sf:ajaxfinish', '.searchandfilter', function() {
     setTimeout(function() {
-        // Reinitialize the Owl carousel
+        // Reinitialize the first Owl carousel
         jQuery('.home-carousel--nested').trigger('destroy.owl.carousel').owlCarousel({
-     nav:true,
-	navText : ["",""], 
-	responsiveRefreshRate: true,
-    loop: true,
-	dots: true,
-	thumbs: false,
-    thumbImage: false,
-	smartSpeed:500,
-    autoplayHoverPause:false,
-	touchDrag  : false,
-	lazyLoad: true, 
-    mouseDrag  : false,
-	margin:0,
-	items: 1,
-    center: true,
-	dotsSpeed: 1000,
-    singleItem: true,
-    animateIn: 'fadeIn',
-    animateOut: 'fadeOut',
-    pagination: false,
-    autoplay: false
+            nav: true,
+            navText: ["", ""],
+            responsiveRefreshRate: true,
+            loop: true,
+            dots: true,
+            thumbs: false,
+            thumbImage: false,
+            smartSpeed: 500,
+            autoplayHoverPause: false,
+            touchDrag: false,
+            lazyLoad: true,
+            mouseDrag: false,
+            margin: 0,
+            items: 1,
+            center: true,
+            dotsSpeed: 1000,
+            singleItem: true,
+            animateIn: 'fadeIn',
+            animateOut: 'fadeOut',
+            pagination: false,
+            autoplay: false
         });
 
-        // Manually trigger lazy loading for images
-        jQuery('.owl-lazy').each(function() {
+        // Manually trigger lazy loading for images in the first carousel
+        jQuery('.home-carousel--nested .owl-lazy').each(function() {
             var img = jQuery(this);
             var src = img.data('src');
-            img.attr('src', src).css('opacity', 1);  // Manually set the src and reveal the image
+            img.attr('src', src).css('opacity', 1); // Manually set the src and reveal the image
         });
-    }, 200); // Adjust the delay if necessary
+
+        // Reinitialize the second Owl carousel
+        jQuery('.owl-carousel-highlights').trigger('destroy.owl.carousel').owlCarousel({
+            nav: false,
+            navText: ["", ""],
+            thumbs: false,
+            thumbImage: false,
+            loop: true,
+            lazyLoad: true,
+            dots: false,
+            autoplay: true,
+            autoplayTimeout: 3000,
+            smartSpeed: 1000,
+            autoplayHoverPause: true,
+            singleItem: false,
+            margin: 0,
+            items: -1,
+            center: true,
+            responsive: {
+                0: {
+                    items: 2,
+                    nav: false
+                },
+                900: {
+                    items: 2
+                },
+                1100: {
+                    items: 3
+                }
+            }
+        });
+		
+		// Manually trigger lazy loading for images in the first carousel
+        jQuery('.owl-carousel-highlights .owl-lazy').each(function() {
+            var img = jQuery(this);
+            var src = img.data('src');
+            img.attr('src', src).css('opacity', 1); // Manually set the src and reveal the image
+        });
+		
+    }, 500); // Adjust the delay if necessary
 });
+
+jQuery(document).on('sf:ajaxfinish', '.searchandfilter', function() {
+    // Select the div with the class "mobile-highlights" and hide it
+    jQuery('.mobile-highlights').hide();
+});
+
+
 
 jQuery(document).ready(function($){
         $('.add-map').click(function(){            
@@ -45,6 +91,38 @@ jQuery(document).ready(function($){
             $('#tab-01').prop('checked', true);
         });
     });
+
+document.addEventListener("DOMContentLoaded", function () {
+    jQuery('.owl-carousel-highlights').owlCarousel({
+   nav:false,
+	navText : ["",""],
+	thumbs: false,
+    thumbImage: false,
+    loop: true,
+	lazyLoad: true,
+	dots: false,
+	autoplay:true,
+    autoplayTimeout:3000,
+	smartSpeed:1000,
+    autoplayHoverPause:true,
+	singleItem: false,
+	margin:0,
+	items: -1,
+    center: true,
+	responsive:{
+        0:{
+            items: 2,
+			nav:false
+            },            
+        900:{
+            items: 2
+            },        
+        1100:{
+            items: 3
+            }
+	}
+    });
+});
 	
 jQuery(document).ready(function($) {
 
@@ -415,8 +493,6 @@ for (let button of Buttons) {
   });
 }
 
-
-
  function accordionDirectory() {
 
         //specify your class/element targeting based on where your filters exist
@@ -459,3 +535,27 @@ jQuery(document).ready(function() {
       element.classList.remove('sticky');
     }
   });
+
+document.addEventListener("DOMContentLoaded", function () {
+    const openBtn = document.getElementById("open-filter-box");
+    const closeBtn = document.getElementById("close-filter-box");
+    const doneBtn = document.getElementById("done-button");
+    const filterBox = document.getElementById("mobile-filter-box");
+
+    if (openBtn && closeBtn && doneBtn && filterBox) {
+        // Open the box
+        openBtn.addEventListener("click", function () {
+            filterBox.classList.add("active");
+        });
+
+        // Close the box with the close button
+        closeBtn.addEventListener("click", function () {
+            filterBox.classList.remove("active");
+        });
+
+        // Close the box with the "Done" button
+        doneBtn.addEventListener("click", function () {
+            filterBox.classList.remove("active");
+        });
+    }
+});

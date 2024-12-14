@@ -15,7 +15,7 @@ get_header(); ?>
 		<div class="space-container 404-page">
 		<h1>We can’t seem to find the page you’re looking for</h1>
 <h3>Here are some helpful links instead:</h3>
-			<ul class"page-list"><li><a href="https://wordpress-986088-3704808.cloudwaysapps.com/" class="menu-link">Home</a></li>
+			<ul class"page-list"><li><a href="https://parasolprojects.com/" class="menu-link">Home</a></li>
 <li><a href="/services/" class="menu-link">Services</a></li>
 <li><a href="/spaces/" class="menu-link">Spaces</a></li>
 <li><a href="/resources/" class="menu-link">Resources</a></li>

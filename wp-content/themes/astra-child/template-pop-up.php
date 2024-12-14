@@ -120,9 +120,9 @@ $('.pop-up-button').on('click',function(){
 	<div id="content" class="site-content">
 		<div class="ast-container">
 		<?php astra_content_top(); ?>
+			
 
 <?php if (astra_page_layout() == "left-sidebar"): ?>
-
 
 <?php endif; ?>
 
@@ -132,8 +132,19 @@ $('.pop-up-button').on('click',function(){
 		<?php astra_content_page_loop(); ?>
 
 		<?php astra_primary_content_bottom(); ?>
-
 		
+		<?php if (wp_is_mobile()) : ?>
+<div id="mobile-filter-box" class="off-canvas">
+    <div class="off-canvas-content">
+        <button id="close-filter-box" class="close-btn">×</button>
+        <h4>FILTERS</h4> 
+        <?php echo do_shortcode('[searchandfilter id="11506"]'); ?>
+        <button id="done-button" class="done-btn">Done</button>
+    </div>
+</div>
+<?php endif; ?>
+
+
 <?php if (astra_page_layout() == "right-sidebar"): ?>
 
 	<?php get_sidebar(); ?>

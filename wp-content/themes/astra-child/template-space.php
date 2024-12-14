@@ -44,7 +44,7 @@ if (!defined("ABSPATH")) {
 		<script>
 		jQuery(document).ready(function($){
 $('.enquire-now-button').on('click',function(){
-    $('.modal-body').load('https://wordpress-986088-3704808.cloudwaysapps.com/modal/enquire/',function(){
+    $('.modal-body').load('https://parasolprojects.com/modal/enquire/',function(){
         $('#enquire-modal').modal({show:true});
     });
 });
