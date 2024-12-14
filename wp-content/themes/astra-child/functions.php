@@ -123,7 +123,7 @@ document.addEventListener("click", function (event) {
 }
 add_action( 'wp_head', 'ti_custom_javascript' );
 function my_acf_init() {
-	acf_update_setting( 'google_api_key', 'AIzaSyAUC-1YXw3nuysuXQcKUv8qrPkGiG7YYqk' );
+	acf_update_setting( 'google_api_key', '' );
 }
 add_action( 'acf/init', 'my_acf_init' );
 function bootstrap_enqueue_styles() {
