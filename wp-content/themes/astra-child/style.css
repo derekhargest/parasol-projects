@@ -5141,12 +5141,22 @@ input[type='text'] {
 	}
 
 	.meta-status .quickview {
-		top: 166px;
+		top: 150px;
 		visibility: visible;
 		opacity: 100;
 		transition: visibility 0s, opacity 0.3s linear;
-		padding: 2px 8px !important;
+		padding: 2px 3px !important;
 		height: 30px !important;
+	}
+
+	.quickview span {
+		display: none;
+	}
+
+	.quickview:before{
+		width: 21px;
+		position: relative;
+		right: 1px;
 	}
 
 	.meta-status .pop-up-type-link,
