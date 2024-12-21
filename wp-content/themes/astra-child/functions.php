@@ -370,3 +370,103 @@ function load_post_content() {
 
 add_action( 'wp_ajax_load_post_content', 'load_post_content' );
 add_action( 'wp_ajax_nopriv_load_post_content', 'load_post_content' );
+
+// /**
+//  * Custom REST API Endpoint for Pop-Ups.
+//  */
+
+function pop_up_quickview_endpoint( $data ) {
+    $post_id = $data['id']; // Get the Post ID from the request
+    $post = get_post( $post_id ); // Retrieve the post object
+
+    if ( ! $post || $post->post_type !== 'pop-up' ) {
+        return new WP_Error( 'no_post', 'Post not found', array( 'status' => 404 ) );
+    }
+
+    // Get ACF fields
+    $acf_fields = get_fields( $post_id );
+
+    // Format dates
+    $date_format_in = 'Ymd';
+    $date_format_out = 'm/d/Y';
+    $start_date = isset( $acf_fields['start_date'] ) 
+        ? DateTime::createFromFormat( $date_format_in, $acf_fields['start_date'] )->format( $date_format_out ) 
+        : 'Start date not available';
+    $end_date = isset( $acf_fields['end_date'] ) 
+        ? DateTime::createFromFormat( $date_format_in, $acf_fields['end_date'] )->format( $date_format_out ) 
+        : 'End date not available';
+
+    // Extract location post titles
+    $location_ids = isset( $acf_fields['location'] ) ? $acf_fields['location'] : array();
+    $location_titles = [];
+
+    if ( is_array( $location_ids ) ) {
+        foreach ( $location_ids as $location_id ) {
+            $location_titles[] = get_the_title( $location_id );
+        }
+    } elseif ( is_numeric( $location_ids ) ) {
+        $location_titles[] = get_the_title( $location_ids );
+    }
+
+    // Prepare gallery data
+    $gallery = [];
+    if ( isset( $acf_fields['gallery'] ) && is_array( $acf_fields['gallery'] ) ) {
+        foreach ( $acf_fields['gallery'] as $image ) {
+            $gallery[] = [
+                'url' => $image['sizes']['medium_large'] ?? $image['url'],
+                'alt' => $image['alt'] ?? '',
+            ];
+        }
+    }
+
+    // Ensure type_of_event is an array
+    $type_of_event = [];
+    if ( isset( $acf_fields['type_of_event'] ) ) {
+        $type_of_event = is_array( $acf_fields['type_of_event'] ) 
+            ? $acf_fields['type_of_event'] 
+            : explode( ',', $acf_fields['type_of_event'] ); // Split string into array
+    }
+
+    // Response data
+    $response = array(
+        'id'              => $post_id,
+        'title'           => get_the_title( $post ),
+        'start_date'      => $start_date,
+        'end_date'        => $end_date,
+        'status'          => $acf_fields['status'] ?? 'No status available',
+        'type_of_event'   => array_map( 'trim', $type_of_event ), // Ensure clean array
+        'excerpt'         => wp_trim_words( get_the_excerpt( $post_id ), 25, '...' ),
+        'location_titles' => ! empty( $location_titles ) ? implode( ', ', $location_titles ) : 'No location available',
+        'gallery'         => $gallery,
+    );
+
+    return $response;
+}
+
+add_action( 'rest_api_init', function () {
+    register_rest_route( 'wp/v2', '/pop-up/(?P<id>\\d+)', array(
+        'methods'  => 'GET',
+        'callback' => 'pop_up_quickview_endpoint',
+        'args'     => array(
+            'id' => array(
+                'required'          => true,
+                'validate_callback' => function ( $param ) {
+                    return is_numeric( $param );
+                },
+            ),
+        ),
+    ) );
+} );
+
+
+function enqueue_child_quickview_scripts() {
+    // Enqueue the quickview JavaScript file
+    wp_enqueue_script(
+        'quickview-scripts', // Handle
+        get_stylesheet_directory_uri() . '/build/quickview.js', // Path to the JS file in the child theme
+        array('jquery'), // Dependencies
+        '1.0.0', // Version
+        true // Load in footer
+    );
+}
+add_action('wp_enqueue_scripts', 'enqueue_child_quickview_scripts');

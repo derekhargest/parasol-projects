@@ -135,7 +135,7 @@ $('.newsletter-button').on('click',function(){
     '[searchandfilter id="25182" action="filter_next_query"]'
 ); ?>
 			<?php echo do_shortcode('[custom-layout id="11536"]'); ?>
-				  	<div class="spacesmap" ><?php echo do_shortcode("[put_wpgm id=3]"); ?>
+				  	<div class="spacesmap" ><?php echo do_shortcode( "[put_wpgm id=3]" ); ?>
 			</div>
 		</div>
 		

@@ -207,6 +207,22 @@ Template: astra
 	max-width: 100%;
 }
 
+#quickview-modal-container .modal-dialog{
+	margin: 15rem auto !important;	
+}
+
+#quickview-modal.show{
+	background-color: rgba(0, 0, 0, 0.4);
+}
+
+#quickview-modal-container .modal-content p.paragraph{
+	font-size: 16px;
+}
+
+#quickview-modal-container .pop-up-location span{
+	font-size: 17px;
+}
+
 .pop-up-modal-slider {
 	max-height: 375.37px;
 	width: 100%;
@@ -477,9 +493,6 @@ Template: astra
 		max-width: 100%;
 	}
 
-	.show {
-		display: initial !important;
-	}
 	.pop-up-preview .owl-stage{
 		height: 229px;
 	}
@@ -2658,6 +2671,7 @@ p {
 		rgba(0, 0, 0, 0.7) 0%,
 		rgba(0, 0, 0, 0) 100%
 	);
+	pointer-events: none;
 }
 
 .myModal .meta-status .pop-up-preview img {
@@ -3284,6 +3298,8 @@ p {
 .modal-header .close {
 	text-shadow: 0 !important;
 	opacity: initial !important;
+	position: relative;
+	z-index: 1000;
 }
 .parasol_premium_modal button.close {
 	color: #ffffff;
@@ -5247,7 +5263,7 @@ input[type='text'] {
 	}
 
 	.pop-up-preview {
-		max-height: 154px !important;
+		max-height: 300px !important;
 		overflow: hidden;
 		object-fit: cover !important;
 		margin-bottom: 10px !important;
